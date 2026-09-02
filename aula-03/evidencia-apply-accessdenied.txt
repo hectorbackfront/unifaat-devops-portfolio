@@ -1,0 +1,695 @@
+data.aws_iam_policy_document.intern_readonly: Reading...
+data.aws_iam_policy_document.deny_destructive: Reading...
+data.aws_iam_policy_document.s3_read: Reading...
+data.aws_iam_policy_document.ec2_app_data: Reading...
+data.aws_iam_policy_document.ec2_s3_full: Reading...
+data.aws_iam_policy_document.ec2_app_data: Read complete after 0s [id=1021526335]
+data.aws_iam_policy_document.deny_destructive: Read complete after 0s [id=3786165762]
+data.aws_iam_policy_document.s3_read: Read complete after 0s [id=972399078]
+data.aws_iam_policy_document.intern_readonly: Read complete after 0s [id=2722072366]
+data.aws_iam_policy_document.ec2_s3_full: Read complete after 0s [id=2198731939]
+data.aws_iam_policy_document.ec2_assume_role: Reading...
+data.aws_iam_policy_document.ec2_assume_role: Read complete after 0s [id=2698996508]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_group.developers will be created
+  + resource "aws_iam_group" "developers" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "6125136-technova-developers"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group.platform_eng will be created
+  + resource "aws_iam_group" "platform_eng" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "6125136-technova-platform-eng"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # aws_iam_group_policy_attachment.developers_deny_destructive will be created
+  + resource "aws_iam_group_policy_attachment" "developers_deny_destructive" {
+      + group      = "6125136-technova-developers"
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+    }
+
+  # aws_iam_group_policy_attachment.developers_s3_read will be created
+  + resource "aws_iam_group_policy_attachment" "developers_s3_read" {
+      + group      = "6125136-technova-developers"
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+    }
+
+  # aws_iam_group_policy_attachment.platform_eng_ec2_s3_full will be created
+  + resource "aws_iam_group_policy_attachment" "platform_eng_ec2_s3_full" {
+      + group      = "6125136-technova-platform-eng"
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+    }
+
+  # aws_iam_instance_profile.ec2_profile will be created
+  + resource "aws_iam_instance_profile" "ec2_profile" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "6125136-technova-ec2-profile"
+      + name_prefix = (known after apply)
+      + path        = "/"
+      + role        = "6125136-technova-ec2-role"
+      + tags        = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-profile"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all    = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-profile"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + unique_id   = (known after apply)
+    }
+
+  # aws_iam_policy.deny_destructive will be created
+  + resource "aws_iam_policy" "deny_destructive" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Deny explicito para acoes de exclusao - prevalece sobre qualquer Allow"
+      + id               = (known after apply)
+      + name             = "6125136-technova-deny-destructive"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "s3:DeleteObjectVersion",
+                          + "s3:DeleteObject",
+                          + "s3:DeleteBucketPolicy",
+                          + "s3:DeleteBucket",
+                          + "iam:DeleteUser",
+                          + "iam:DeleteRole",
+                          + "iam:DeletePolicy",
+                          + "ec2:TerminateInstances",
+                        ]
+                      + Effect   = "Deny"
+                      + Resource = "*"
+                      + Sid      = "NegarAcoesDestrutivas"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-deny-destructive"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all         = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-deny-destructive"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+    }
+
+  # aws_iam_policy.ec2_app_data will be created
+  + resource "aws_iam_policy" "ec2_app_data" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Read/Write restrito aos buckets technova-app-data-*"
+      + id               = (known after apply)
+      + name             = "6125136-technova-ec2-app-data"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "s3:ListBucket"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:s3:::technova-app-data-*"
+                      + Sid      = "ListarBucketsDeDados"
+                    },
+                  + {
+                      + Action   = [
+                          + "s3:PutObject",
+                          + "s3:GetObject",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:s3:::technova-app-data-*/*"
+                      + Sid      = "LerEscreverDadosDaAplicacao"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-app-data"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all         = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-app-data"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+    }
+
+  # aws_iam_policy.ec2_s3_full will be created
+  + resource "aws_iam_policy" "ec2_s3_full" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "EC2 describe + start/stop por tag e S3 read/write nos buckets technova-*"
+      + id               = (known after apply)
+      + name             = "6125136-technova-ec2-s3-full"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ec2:DescribeTags",
+                          + "ec2:DescribeInstances",
+                          + "ec2:DescribeInstanceStatus",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                      + Sid      = "DescreverRecursosEC2"
+                    },
+                  + {
+                      + Action    = [
+                          + "ec2:StopInstances",
+                          + "ec2:StartInstances",
+                        ]
+                      + Condition = {
+                          + StringEquals = {
+                              + "ec2:ResourceTag/Project" = "TechNova"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                      + Sid       = "LigarDesligarInstanciasDoProjeto"
+                    },
+                  + {
+                      + Action   = "s3:ListBucket"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:s3:::technova-*"
+                      + Sid      = "ListarBucketsDoProjeto"
+                    },
+                  + {
+                      + Action   = [
+                          + "s3:PutObject",
+                          + "s3:GetObject",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:s3:::technova-*/*"
+                      + Sid      = "LerEscreverObjetosDoProjeto"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-s3-full"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all         = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-s3-full"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+    }
+
+  # aws_iam_policy.intern_readonly will be created
+  + resource "aws_iam_policy" "intern_readonly" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Nega escrita para o estagiario - anexada diretamente ao user"
+      + id               = (known after apply)
+      + name             = "6125136-technova-intern-readonly"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "s3:PutObjectAcl",
+                          + "s3:PutObject",
+                          + "s3:PutBucketPolicy",
+                          + "ec2:StopInstances",
+                          + "ec2:StartInstances",
+                          + "ec2:RunInstances",
+                        ]
+                      + Effect   = "Deny"
+                      + Resource = "*"
+                      + Sid      = "NegarQualquerEscrita"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-intern-readonly"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all         = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-intern-readonly"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+    }
+
+  # aws_iam_policy.s3_read will be created
+  + resource "aws_iam_policy" "s3_read" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Leitura de objetos nos buckets technova-* (menor privilegio)"
+      + id               = (known after apply)
+      + name             = "6125136-technova-s3-read"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "s3:ListBucket"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:s3:::technova-*"
+                      + Sid      = "ListarBucketsDoProjeto"
+                    },
+                  + {
+                      + Action   = "s3:GetObject"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:s3:::technova-*/*"
+                      + Sid      = "LerObjetosDoProjeto"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-s3-read"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all         = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-s3-read"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+    }
+
+  # aws_iam_role.ec2_role will be created
+  + resource "aws_iam_role" "ec2_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                      + Sid       = "PermitirEC2AssumirRole"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + description           = "Role assumida por instancias EC2 para acessar os buckets de dados da aplicacao"
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "6125136-technova-ec2-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-role"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all              = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-technova-ec2-role"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.ec2_role_app_data will be created
+  + resource "aws_iam_role_policy_attachment" "ec2_role_app_data" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "6125136-technova-ec2-role"
+    }
+
+  # aws_iam_user.juliana_dev will be created
+  + resource "aws_iam_user" "juliana_dev" {
+      + arn           = (known after apply)
+      + force_destroy = true
+      + id            = (known after apply)
+      + name          = "6125136-juliana-dev"
+      + path          = "/"
+      + tags          = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Cargo"      = "Developer"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-juliana-dev"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all      = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Cargo"      = "Developer"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-juliana-dev"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + unique_id     = (known after apply)
+    }
+
+  # aws_iam_user.lucas_intern will be created
+  + resource "aws_iam_user" "lucas_intern" {
+      + arn           = (known after apply)
+      + force_destroy = true
+      + id            = (known after apply)
+      + name          = "6125136-lucas-intern"
+      + path          = "/"
+      + tags          = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Cargo"      = "Intern"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-lucas-intern"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all      = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Cargo"      = "Intern"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-lucas-intern"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + unique_id     = (known after apply)
+    }
+
+  # aws_iam_user.rafael_platform will be created
+  + resource "aws_iam_user" "rafael_platform" {
+      + arn           = (known after apply)
+      + force_destroy = true
+      + id            = (known after apply)
+      + name          = "6125136-rafael-platform"
+      + path          = "/"
+      + tags          = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Cargo"      = "Platform Engineer"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-rafael-platform"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + tags_all      = {
+          + "Aluno"      = "Hector Marcelo Pedroso dos Santos"
+          + "Aula"       = "03"
+          + "Cargo"      = "Platform Engineer"
+          + "Disciplina" = "DevOps - UniFAAT 2026-2"
+          + "ManagedBy"  = "Terraform"
+          + "Name"       = "6125136-rafael-platform"
+          + "Project"    = "TechNova"
+          + "RA"         = "6125136"
+        }
+      + unique_id     = (known after apply)
+    }
+
+  # aws_iam_user_group_membership.juliana_dev will be created
+  + resource "aws_iam_user_group_membership" "juliana_dev" {
+      + groups = [
+          + "6125136-technova-developers",
+        ]
+      + id     = (known after apply)
+      + user   = "6125136-juliana-dev"
+    }
+
+  # aws_iam_user_group_membership.lucas_intern will be created
+  + resource "aws_iam_user_group_membership" "lucas_intern" {
+      + groups = [
+          + "6125136-technova-developers",
+        ]
+      + id     = (known after apply)
+      + user   = "6125136-lucas-intern"
+    }
+
+  # aws_iam_user_group_membership.rafael_platform will be created
+  + resource "aws_iam_user_group_membership" "rafael_platform" {
+      + groups = [
+          + "6125136-technova-developers",
+          + "6125136-technova-platform-eng",
+        ]
+      + id     = (known after apply)
+      + user   = "6125136-rafael-platform"
+    }
+
+  # aws_iam_user_policy_attachment.lucas_intern_readonly will be created
+  + resource "aws_iam_user_policy_attachment" "lucas_intern_readonly" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + user       = "6125136-lucas-intern"
+    }
+
+Plan: 20 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2_instance_profile = {
+      + arn  = (known after apply)
+      + name = "6125136-technova-ec2-profile"
+    }
+  + ec2_role_arn         = (known after apply)
+  + iam_groups           = {
+      + developers   = {
+          + arn  = (known after apply)
+          + name = "6125136-technova-developers"
+        }
+      + platform_eng = {
+          + arn  = (known after apply)
+          + name = "6125136-technova-platform-eng"
+        }
+    }
+  + iam_users            = {
+      + juliana_dev     = {
+          + arn    = (known after apply)
+          + groups = [
+              + "6125136-technova-developers",
+            ]
+          + name   = "6125136-juliana-dev"
+        }
+      + lucas_intern    = {
+          + arn    = (known after apply)
+          + groups = [
+              + "6125136-technova-developers",
+            ]
+          + name   = "6125136-lucas-intern"
+        }
+      + rafael_platform = {
+          + arn    = (known after apply)
+          + groups = [
+              + "6125136-technova-developers",
+              + "6125136-technova-platform-eng",
+            ]
+          + name   = "6125136-rafael-platform"
+        }
+    }
+  + policy_arns          = {
+      + deny_destructive = (known after apply)
+      + ec2_app_data     = (known after apply)
+      + ec2_s3_full      = (known after apply)
+      + intern_readonly  = (known after apply)
+      + s3_read          = (known after apply)
+    }
+  + resumo_entrega       = {
+      + aluno         = "Hector Marcelo Pedroso dos Santos"
+      + groups        = 2
+      + instance_prof = 1
+      + policies      = 5
+      + ra            = "6125136"
+      + roles         = 1
+      + users         = 3
+    }
+aws_iam_group.developers: Creating...
+aws_iam_group.platform_eng: Creating...
+aws_iam_policy.deny_destructive: Creating...
+aws_iam_user.juliana_dev: Creating...
+aws_iam_user.rafael_platform: Creating...
+aws_iam_policy.intern_readonly: Creating...
+aws_iam_policy.s3_read: Creating...
+aws_iam_policy.ec2_app_data: Creating...
+aws_iam_role.ec2_role: Creating...
+aws_iam_policy.ec2_s3_full: Creating...
+aws_iam_user.lucas_intern: Creating...
+
+Error: creating IAM Group (6125136-technova-developers): operation error IAM: CreateGroup, https response error StatusCode: 403, RequestID: a047d56c-424d-44ca-b7c0-097f1744fb46, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:CreateGroup on resource: arn:aws:iam::210645360611:group/6125136-technova-developers because no identity-based policy allows the iam:CreateGroup action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/5462jeqy7gjvz4v3j287aewuw for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 5462jeqy7gjvz4v3j287aewuw
+
+  with aws_iam_group.developers,
+  on main.tf line 8, in resource "aws_iam_group" "developers":
+   8: resource "aws_iam_group" "developers" {
+
+
+Error: creating IAM Group (6125136-technova-platform-eng): operation error IAM: CreateGroup, https response error StatusCode: 403, RequestID: 7eb42023-9060-442f-92c2-8b6a8672e4f7, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:CreateGroup on resource: arn:aws:iam::210645360611:group/6125136-technova-platform-eng because no identity-based policy allows the iam:CreateGroup action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/745di6dx26rwq62jgtjdp2q1b for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 745di6dx26rwq62jgtjdp2q1b
+
+  with aws_iam_group.platform_eng,
+  on main.tf line 12, in resource "aws_iam_group" "platform_eng":
+  12: resource "aws_iam_group" "platform_eng" {
+
+
+Error: creating IAM User (6125136-juliana-dev): operation error IAM: CreateUser, https response error StatusCode: 403, RequestID: 4b354fae-4b8b-4649-b788-6aaafd9b1dab, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:CreateUser on resource: arn:aws:iam::210645360611:user/6125136-juliana-dev because no identity-based policy allows the iam:CreateUser action
+
+  with aws_iam_user.juliana_dev,
+  on main.tf line 20, in resource "aws_iam_user" "juliana_dev":
+  20: resource "aws_iam_user" "juliana_dev" {
+
+
+Error: creating IAM User (6125136-rafael-platform): operation error IAM: CreateUser, https response error StatusCode: 403, RequestID: bf717e13-d052-4b79-a918-c3eac0f251cf, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:CreateUser on resource: arn:aws:iam::210645360611:user/6125136-rafael-platform because no identity-based policy allows the iam:CreateUser action
+
+  with aws_iam_user.rafael_platform,
+  on main.tf line 30, in resource "aws_iam_user" "rafael_platform":
+  30: resource "aws_iam_user" "rafael_platform" {
+
+
+Error: creating IAM User (6125136-lucas-intern): operation error IAM: CreateUser, https response error StatusCode: 403, RequestID: c9a94b87-fa69-4bbc-a614-1fb2c0847e46, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:CreateUser on resource: arn:aws:iam::210645360611:user/6125136-lucas-intern because no identity-based policy allows the iam:CreateUser action
+
+  with aws_iam_user.lucas_intern,
+  on main.tf line 40, in resource "aws_iam_user" "lucas_intern":
+  40: resource "aws_iam_user" "lucas_intern" {
+
+
+Error: creating IAM Policy (6125136-technova-s3-read): operation error IAM: CreatePolicy, https response error StatusCode: 403, RequestID: a06c5fbf-7609-4a44-8f64-c0df9115bda6, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:TagPolicy on resource: policy 6125136-technova-s3-read because no identity-based policy allows the iam:TagPolicy action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/820gqa3wlv6a4io65egnaylca for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 820gqa3wlv6a4io65egnaylca
+
+  with aws_iam_policy.s3_read,
+  on policies.tf line 31, in resource "aws_iam_policy" "s3_read":
+  31: resource "aws_iam_policy" "s3_read" {
+
+
+Error: creating IAM Policy (6125136-technova-ec2-s3-full): operation error IAM: CreatePolicy, https response error StatusCode: 403, RequestID: ece9d2bf-15aa-41d6-bc1a-e2a9e864c4de, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:TagPolicy on resource: policy 6125136-technova-ec2-s3-full because no identity-based policy allows the iam:TagPolicy action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/bdcx9rr5vo4eiakpkm6zl6ydk for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: bdcx9rr5vo4eiakpkm6zl6ydk
+
+  with aws_iam_policy.ec2_s3_full,
+  on policies.tf line 99, in resource "aws_iam_policy" "ec2_s3_full":
+  99: resource "aws_iam_policy" "ec2_s3_full" {
+
+
+Error: creating IAM Policy (6125136-technova-deny-destructive): operation error IAM: CreatePolicy, https response error StatusCode: 403, RequestID: fc64b691-3d8b-4af5-a7c9-ae28cb517869, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:TagPolicy on resource: policy 6125136-technova-deny-destructive because no identity-based policy allows the iam:TagPolicy action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/745di6dx26rwq62jgtjdp2q1c for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 745di6dx26rwq62jgtjdp2q1c
+
+  with aws_iam_policy.deny_destructive,
+  on policies.tf line 134, in resource "aws_iam_policy" "deny_destructive":
+ 134: resource "aws_iam_policy" "deny_destructive" {
+
+
+Error: creating IAM Policy (6125136-technova-intern-readonly): operation error IAM: CreatePolicy, https response error StatusCode: 403, RequestID: 9679ca12-241c-4c1e-90a3-d5f8b92e7854, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:TagPolicy on resource: policy 6125136-technova-intern-readonly because no identity-based policy allows the iam:TagPolicy action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/4gv35455ac7ct58692e50xj2w for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 4gv35455ac7ct58692e50xj2w
+
+  with aws_iam_policy.intern_readonly,
+  on policies.tf line 166, in resource "aws_iam_policy" "intern_readonly":
+ 166: resource "aws_iam_policy" "intern_readonly" {
+
+
+Error: creating IAM Role (6125136-technova-ec2-role): operation error IAM: CreateRole, https response error StatusCode: 403, RequestID: f7a50d6d-fb96-4d40-8d57-c03db1fdbe3f, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:CreateRole on resource: arn:aws:iam::210645360611:role/6125136-technova-ec2-role because no identity-based policy allows the iam:CreateRole action
+
+  with aws_iam_role.ec2_role,
+  on roles.tf line 21, in resource "aws_iam_role" "ec2_role":
+  21: resource "aws_iam_role" "ec2_role" {
+
+
+Error: creating IAM Policy (6125136-technova-ec2-app-data): operation error IAM: CreatePolicy, https response error StatusCode: 403, RequestID: 7a62d5e9-975d-4b45-a0e6-edae8f9b1a55, api error AccessDenied: User: arn:aws:sts::210645360611:assumed-role/voclabs/user5372812=Hector_Marcelo_Pedroso_Dos_Santos_ is not authorized to perform: iam:TagPolicy on resource: policy 6125136-technova-ec2-app-data because no identity-based policy allows the iam:TagPolicy action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/2gxp9yr5czheoth5veq2p7ib4 for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 2gxp9yr5czheoth5veq2p7ib4
+
+  with aws_iam_policy.ec2_app_data,
+  on roles.tf line 62, in resource "aws_iam_policy" "ec2_app_data":
+  62: resource "aws_iam_policy" "ec2_app_data" {
+
