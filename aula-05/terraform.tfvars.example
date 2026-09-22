@@ -1,0 +1,6 @@
+# Copie este arquivo para terraform.tfvars e preencha os valores reais.
+# terraform.tfvars NUNCA deve ser commitado (contém a senha do banco).
+
+aws_region  = "us-east-1"
+owner       = "6125136"
+db_password = "TROQUE-ESTA-SENHA-ANTES-DE-APLICAR"

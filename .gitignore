@@ -14,3 +14,14 @@ Thumbs.db
 # Build
 dist/
 build/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+terraform.tfvars
+*.tfvars
+!*.tfvars.example
+*.pem
