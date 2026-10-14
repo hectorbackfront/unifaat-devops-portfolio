@@ -1,3 +1,5 @@
+![CI Pipeline — Aula 08](https://github.com/hectorbackfront/unifaat-devops-portfolio/actions/workflows/ci-aula08.yml/badge.svg)
+
 **Aluno:** [Hector Marcelo Pedroso Dos Santos]  
 **RA:** [6125136]  
 **Disciplina:** DevOps — Centro Universitário UniFAAT  
