@@ -2,9 +2,9 @@ name: CI Pipeline — Aula 08
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
   workflow_dispatch:
 
 # B4 — cancela runs em andamento da mesma branch/PR
