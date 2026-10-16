@@ -1,0 +1,126 @@
+name: CI Pipeline — Aula 08
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# B4 — cancela runs em andamento da mesma branch/PR
+concurrency:
+  group: ci-aula08-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: aula-08/technova-api
+
+env:
+  # R5 — secret referenciado (valor fictício; o log o exibe mascarado)
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  lint:
+    name: Lint (ESLint)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20 (com cache npm)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: aula-08/technova-api/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar ESLint
+        run: npm run lint
+
+  test:
+    name: Testes (Jest + coverage) — Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    needs: lint
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20]   # B1 — matrix strategy
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }} (com cache npm)
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: aula-08/technova-api/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Verificar secret (log mascarado)
+        run: |
+          echo "AWS_REGION configurada via secret: ${{ secrets.AWS_REGION }}"
+          if [ -z "$AWS_REGION" ]; then echo "::warning::Secret AWS_REGION não configurado"; fi
+
+      - name: Executar testes com coverage
+        run: npm run test:ci
+
+      - name: Publicar coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-node-${{ matrix.node-version }}
+          path: aula-08/technova-api/coverage/
+
+      # B3 — comenta o resultado no PR (apenas PRs do próprio repo)
+      - name: Comentar resultado no PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && matrix.node-version == 20
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `✅ **CI Aula 08** — lint e testes (Node ${{ matrix.node-version }}) passaram para o commit \`${context.sha.slice(0, 7)}\`.\n\n[Ver execução](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
+            });
+
+  build:
+    name: Build (Docker)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Docker build
+        run: docker build -t technova-api:${{ github.sha }} .
+
+      - name: Listar imagem
+        run: docker images technova-api
+
+      # B5 — smoke test
+      - name: Smoke test (health check)
+        run: |
+          docker run -d --name test-container -p 3000:3000 technova-api:${{ github.sha }}
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            curl -fs http://localhost:3000/health && break
+            sleep 1
+          done
+          curl -f http://localhost:3000/health
+      - name: Parar e remover container
+        if: always()
+        run: |
+          docker stop test-container || true
+          docker rm test-container || true
