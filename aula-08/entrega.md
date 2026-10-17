@@ -16,10 +16,14 @@
 - [x] Docker build no CI sem erros (tag `technova-api:${{ github.sha }}`)
 - [x] Secret referenciado no workflow (`AWS_REGION`)
 - [x] Badge de status no README
-- [ ] Screenshots do pipeline verde
+- [x] Screenshots do pipeline (verde, falhando e secrets) — `aula-08/screenshots/`
 
 Bônus: matrix Node 18/20, cache npm, comentário no PR, concurrency, smoke test Docker.
 
 ## Evidência do Pipeline Rodando
 
-[Colar link da execução na aba Actions]
+- Execução verde (master): https://github.com/hectorbackfront/unifaat-devops-portfolio/actions/runs/38831431604
+- Aba Actions: https://github.com/hectorbackfront/unifaat-devops-portfolio/actions
+- Falha intencional (erro de lint, PR #1, fechado sem merge): lint vermelho, test e build pulados.
+
+Screenshots: `screenshot-pipeline-passing.png`, `screenshot-pipeline-failing.png`, `screenshot-secrets-configured.png`.
