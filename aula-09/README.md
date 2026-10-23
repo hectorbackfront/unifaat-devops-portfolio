@@ -6,52 +6,83 @@ Ambiente: AWS Academy Learner Lab, região `us-east-1`. Credenciais do Lab expir
 ## Checklist (do TF da aula 09)
 
 ### 1. Build e push no ECR (40%)
-- [ ] `ecr-push.sh`: garante o repo `technova-api` (idempotente), login no ECR, build multi-stage e push
-- [ ] Tags: `sha-XXXXXXX`, `latest` e semver (`1.2.3`, `1.2`, `1`) a partir de git tag `v*.*.*`
-- [ ] Pull por tag funcionando (rollback)
+- [x] `ecr-push.sh`: garante o repo `technova-api` (idempotente), login no ECR, build multi-stage e push
+- [x] Tags: `sha-XXXXXXX`, `latest` e semver (`1.2.3`, `1.2`, `1`) a partir de git tag `v*.*.*`
+- [x] Pull por tag funcionando (rollback)
 - [ ] (opcional) `.github/workflows/ci.yml` com `aws-actions/configure-aws-credentials@v4` + `amazon-ecr-login@v2`
 
 ### 2. AI Review (30%)
-- [ ] `.github/workflows/ai-review.yml` em `pull_request` (opened, synchronize, reopened)
-- [ ] `.github/scripts/ai-review.js` detecta: secrets hardcoded, `eval()`, SQL injection, `console.log`, `catch` vazio
-- [ ] Comentário no PR em tabela, por severidade
+- [x] Workflow em `pull_request` (opened, synchronize, reopened) — `.github/workflows/ai-review-aula09.yml` (na raiz do repositório, único lugar que o GitHub executa)
+- [x] `aula-09/.github/scripts/ai-review.js` detecta: secrets hardcoded, `eval()`, SQL injection, `console.log`, `catch` vazio
+- [x] Comentário no PR em tabela, por severidade
 
 ### 3. Quality gate (10%)
-- [ ] CRITICAL => `exit 1` (bloqueia o PR); WARNING/INFO => passa
+- [x] CRITICAL => `exit 1` (bloqueia o PR); WARNING/INFO => passa
 
 ### 4. Documentação e evidências (20%)
-- [ ] `ia-cicd-analise.md` (por que ECR, estratégia de tags, padrões, prompt/lógica, quando confiar na IA, limitações)
-- [ ] `screenshots/ecr-console.png` — repositório com as tags
-- [ ] `screenshots/ai-review-comment.png` — comentário no PR
-- [ ] `screenshots/ecr-push-ok.png` — `ecr-push.sh` concluído (ou CI verde)
-- [ ] `screenshots/quality-gate-block.png` — PR bloqueado por CRITICAL
+- [x] `ia-cicd-analise.md` (por que ECR, estratégia de tags, padrões, prompt/lógica, quando confiar na IA, limitações)
+- [x] `screenshots/ecr-console.png` — repositório com as tags
+- [x] `screenshots/ai-review-comment.png` — comentário no PR
+- [x] `screenshots/ecr-push-ok.png` — `ecr-push.sh` concluído
+- [x] `screenshots/quality-gate-block.png` — PR bloqueado por CRITICAL
 
 ### Bônus
-- [ ] Lifecycle policy no ECR
-- [ ] Scan on push no ECR com evidência
-- [ ] Comentário atualizado (não duplicado)
+- [x] Lifecycle policy no ECR (`lifecycle-policy.json`, aplicada pelo `ecr-push.sh`)
+- [ ] Scan on push no ECR com evidência — ligado no repositório, mas o ECR não retornou resultado de scan para a imagem
+- [x] Comentário atualizado (não duplicado) — marcador `<!-- technova-ai-review -->`
 - [ ] Workflow de segurança separado
 - [ ] Badge no README
-- [ ] Mais de 8 padrões no AI review
+- [x] Mais de 8 padrões no AI review — 13 regras
 - [ ] Dockerfile com score A (Docker Scout ou Trivy)
 
 ## Estrutura
 
 ```
 aula-09/
-├── .github/
-│   ├── workflows/{ci.yml, ai-review.yml}
-│   └── scripts/ai-review.js
-├── ecr-push.sh
-├── Dockerfile
+├── .github/scripts/ai-review.js
+├── Dockerfile                 # multi-stage, usuário não-root, HEALTHCHECK
 ├── .dockerignore
+├── ecr-push.sh
+├── lifecycle-policy.json
+├── demo-gate.js               # código inseguro de propósito (demonstração do gate)
+├── server.js, package*.json   # TechNova API (da aula 08)
 ├── ia-cicd-analise.md
-├── screenshots/
-└── README.md
+├── entrega.md
+└── screenshots/
+
+../.github/workflows/ai-review-aula09.yml   # workflow (raiz do repositório)
 ```
 
 ## Como executar
-_(preencher quando o `ecr-push.sh` estiver pronto)_
+
+Pré-requisitos: Docker, AWS CLI e credenciais válidas do Learner Lab em `~/.aws/credentials` (Start Lab → AWS Details).
+
+```bash
+# 1. (opcional) marcar uma versão para gerar as tags semver
+git tag v1.0.0
+
+# 2. build + push para o ECR
+./aula-09/ecr-push.sh
+```
+
+O script, nesta ordem: identifica a conta, cria o repositório `technova-api` se não existir, aplica a lifecycle policy, faz login no ECR, calcula as tags, builda e publica.
+
+- Tags: `sha-<commit>` e `latest` sempre; `1.2.3`, `1.2` e `1` se o commit tiver a git tag `v1.2.3`.
+- Variáveis opcionais: `AWS_REGION` (padrão `us-east-1`) e `REPO_NAME` (padrão `technova-api`).
+- O script pode ser executado várias vezes; o que já existe não é recriado.
+
+Rollback (voltar a uma versão publicada):
+
+```bash
+docker pull <conta>.dkr.ecr.us-east-1.amazonaws.com/technova-api:1.0.0
+```
+
+### Testar o AI review localmente
+
+```bash
+git diff --unified=0 master...HEAD > /tmp/pr.diff
+node aula-09/.github/scripts/ai-review.js /tmp/pr.diff   # exit 1 se houver CRITICAL
+```
 
 ## Entrega
 No fork da disciplina vai **somente** `entregas/aula-09/RA/entrega.md`. Todo o resto fica aqui no portfólio.
