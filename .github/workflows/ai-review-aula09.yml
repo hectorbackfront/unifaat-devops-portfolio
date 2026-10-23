@@ -1,0 +1,41 @@
+name: AI Review — Aula 09
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write   # necessario para comentar no PR
+
+# Um PR novo push cancela a analise anterior do mesmo PR
+concurrency:
+  group: ai-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  ai-review:
+    name: AI Review + Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (historico completo para o diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Gerar diff do PR
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        # tres pontos = so o que o PR muda em relacao ao ponto de ramificacao
+        run: git diff --unified=0 "$BASE_SHA...$HEAD_SHA" > "$RUNNER_TEMP/pr.diff"
+
+      - name: Executar AI review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node aula-09/.github/scripts/ai-review.js "$RUNNER_TEMP/pr.diff"
