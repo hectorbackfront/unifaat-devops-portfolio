@@ -44,7 +44,6 @@ aula-09/
 ├── .dockerignore
 ├── ecr-push.sh
 ├── lifecycle-policy.json
-├── demo-gate.js               # código inseguro de propósito (demonstração do gate)
 ├── server.js, package*.json   # TechNova API (da aula 08)
 ├── ia-cicd-analise.md
 ├── entrega.md

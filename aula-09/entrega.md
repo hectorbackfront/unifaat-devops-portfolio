@@ -24,11 +24,15 @@ Não feito: `ci.yml` com push automático ao ECR, badge, workflow de segurança 
 
 ## Evidência do Pipeline Rodando
 
-- PR de demonstração do gate (aberto de propósito, sem merge; contém `demo-gate.js` inseguro): https://github.com/hectorbackfront/unifaat-devops-portfolio/pull/2
-- Execução do AI Review (falhou por CRITICAL): https://github.com/hectorbackfront/unifaat-devops-portfolio/actions/runs/39880155109
+- PR de demonstração do quality gate: https://github.com/hectorbackfront/unifaat-devops-portfolio/pull/2
+- Execução do AI Review que **bloqueou** o PR (CRITICAL): https://github.com/hectorbackfront/unifaat-devops-portfolio/actions/runs/39880155109
+- Execução do AI Review que **liberou** o PR após a correção (check verde): https://github.com/hectorbackfront/unifaat-devops-portfolio/actions/runs/39962673044
 - Aba Actions: https://github.com/hectorbackfront/unifaat-devops-portfolio/actions
 
-Resultado no PR #2: 3 CRITICAL (secret hardcoded, `eval()`, SQL injection) e 3 WARNING; check vermelho e comentário atualizado a cada push.
+Ciclo no PR #2:
+1. PR aberto com um arquivo inseguro de propósito (`demo-gate.js`): **3 CRITICAL** (secret hardcoded, `eval()`, SQL injection) e 3 WARNING; check vermelho, PR bloqueado.
+2. Remoção do arquivo: check **verde** (0 CRITICAL, 1 WARNING), pois WARNING não bloqueia.
+3. Nos dois casos o comentário do bot foi **atualizado**, não duplicado.
 
 Tags publicadas na mesma imagem: `sha-d7ed469`, `latest`, `1.0.0`, `1.0`, `1`.
 
