@@ -78,4 +78,4 @@ Lição: use IA e automação como **segunda opinião**, não como autoridade, e
 
 ## Evidências
 
-`screenshots/`: `ecr-console.png`, `ecr-push-ok.png`, `ecr-rollback-pull.png`, `ai-review-comment.png`, `quality-gate-block.png`, `actions-runs.png`.
+`screenshots/`: `ecr-console.png`, `ecr-push-ok.png`, `ecr-rollback-pull.png`, `ai-review-comment.png`, `quality-gate-block.png`, `actions-runs.png`, `codex-review-lifecycle.png` (revisão do Codex apontando o problema da lifecycle, hoje marcado como *Outdated* após a correção).
