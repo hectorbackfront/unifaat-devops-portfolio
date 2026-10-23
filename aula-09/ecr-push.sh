@@ -28,7 +28,7 @@ fi
 echo "==> Aplicando lifecycle policy (substitui a anterior, entao e idempotente)"
 aws ecr put-lifecycle-policy --repository-name "$REPO_NAME" --region "$AWS_REGION" \
   --lifecycle-policy-text file://lifecycle-policy.json >/dev/null
-echo "    sem tag > 7 dias e sha-* alem das 20 mais recentes expiram"
+echo "    imagens sem tag com mais de 7 dias expiram (tags de versao nunca sao tocadas)"
 
 echo "==> Login no ECR"
 aws ecr get-login-password --region "$AWS_REGION" \

@@ -10,17 +10,6 @@
         "countNumber": 7
       },
       "action": { "type": "expire" }
-    },
-    {
-      "rulePriority": 2,
-      "description": "Mantem so as 20 imagens sha- mais recentes",
-      "selection": {
-        "tagStatus": "tagged",
-        "tagPrefixList": ["sha-"],
-        "countType": "imageCountMoreThan",
-        "countNumber": 20
-      },
-      "action": { "type": "expire" }
     }
   ]
 }
