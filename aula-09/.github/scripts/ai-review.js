@@ -26,7 +26,9 @@ const RULES = [
   {
     id: 'hardcoded-secret', severity: 'CRITICAL', redact: true,
     title: 'Secret hardcoded',
-    test: (l) => /\b(password|passwd|secret|api[_-]?key|token|auth)\w*\s*[:=]\s*['"`][^'"`\s]{6,}['"`]/i.test(l),
+    // nomes em ingles e pt-BR; o prefixo \w* pega adminPassword, dbSenha etc.
+    // ("auth" sozinho ficou de fora: casaria com "author")
+    test: (l) => /\w*(password|passwd|pwd|senha|secret|segredo|api[_-]?key|token|credential)\w*\s*[:=]\s*['"`][^'"`\s]{6,}['"`]/i.test(l),
     hint: 'Use variavel de ambiente ou GitHub Secrets.'
   },
   {
