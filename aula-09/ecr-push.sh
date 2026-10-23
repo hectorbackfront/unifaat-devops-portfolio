@@ -25,6 +25,11 @@ else
   echo "    criado (scan on push ligado)"
 fi
 
+echo "==> Aplicando lifecycle policy (substitui a anterior, entao e idempotente)"
+aws ecr put-lifecycle-policy --repository-name "$REPO_NAME" --region "$AWS_REGION" \
+  --lifecycle-policy-text file://lifecycle-policy.json >/dev/null
+echo "    sem tag > 7 dias e sha-* alem das 20 mais recentes expiram"
+
 echo "==> Login no ECR"
 aws ecr get-login-password --region "$AWS_REGION" \
   | docker login --username AWS --password-stdin "$REGISTRY"
@@ -46,10 +51,11 @@ printf '    - %s\n' "${TAGS[@]}"
 echo "==> Build"
 TAG_ARGS=()
 for t in "${TAGS[@]}"; do TAG_ARGS+=(-t "${IMAGE}:${t}"); done
-docker build "${TAG_ARGS[@]}" .
+docker build -q "${TAG_ARGS[@]}" . >/dev/null
 
 echo "==> Push"
-for t in "${TAGS[@]}"; do docker push "${IMAGE}:${t}"; done
+# -q: imprime so a referencia final (sem o log de cada camada)
+for t in "${TAGS[@]}"; do docker push -q "${IMAGE}:${t}"; done
 
 echo "==> Concluido. Imagem publicada em ${IMAGE}"
 echo "    Rollback: docker pull ${IMAGE}:<tag>"

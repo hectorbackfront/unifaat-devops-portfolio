@@ -1,0 +1,26 @@
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Apaga imagens sem tag com mais de 7 dias (sobras de rebuild)",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "sinceImagePushed",
+        "countUnit": "days",
+        "countNumber": 7
+      },
+      "action": { "type": "expire" }
+    },
+    {
+      "rulePriority": 2,
+      "description": "Mantem so as 20 imagens sha- mais recentes",
+      "selection": {
+        "tagStatus": "tagged",
+        "tagPrefixList": ["sha-"],
+        "countType": "imageCountMoreThan",
+        "countNumber": 20
+      },
+      "action": { "type": "expire" }
+    }
+  ]
+}
