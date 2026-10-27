@@ -9,10 +9,10 @@ Ambiente: AWS Academy Learner Lab, região `us-east-1`. Credenciais do Lab expir
 - [x] `ecr-push.sh`: garante o repo `technova-api` (idempotente), login no ECR, build multi-stage e push
 - [x] Tags: `sha-XXXXXXX`, `latest` e semver (`1.2.3`, `1.2`, `1`) a partir de git tag `v*.*.*`
 - [x] Pull por tag funcionando (rollback)
-- [ ] (opcional) `.github/workflows/ci.yml` com `aws-actions/configure-aws-credentials@v4` + `amazon-ecr-login@v2`
+- [ ] (opcional) `.github/workflows/ci.yml` com `aws-actions/configure-aws-credentials@v4` + `amazon-ecr-login@v2` — **criado, ainda não executado** (roda em tag `v*.*.*` ou manualmente; precisa dos 3 secrets do Lab, que expiram a cada sessão)
 
 ### 2. AI Review (30%)
-- [x] Workflow em `pull_request` (opened, synchronize, reopened) — `.github/workflows/ai-review-aula09.yml` (na raiz do repositório, único lugar que o GitHub executa)
+- [x] Workflow em `pull_request` (opened, synchronize, reopened) — `.github/workflows/ai-review.yml` (na raiz do repositório, único lugar que o GitHub executa)
 - [x] `aula-09/.github/scripts/ai-review.js` detecta: secrets hardcoded, `eval()`, SQL injection, `console.log`, `catch` vazio
 - [x] Comentário no PR em tabela, por severidade
 
@@ -49,7 +49,8 @@ aula-09/
 ├── entrega.md
 └── screenshots/
 
-../.github/workflows/ai-review-aula09.yml   # workflow (raiz do repositório)
+../.github/workflows/ai-review.yml   # AI review + quality gate (raiz do repositório)
+../.github/workflows/ci.yml          # (opcional) push ao ECR em tag v*.*.* ou manual
 ```
 
 ## Como executar

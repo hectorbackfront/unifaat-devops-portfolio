@@ -13,14 +13,14 @@
 - [x] Script `ecr-push.sh` publicando no **Amazon ECR** com tags (sha, latest, semver) — `aula-09/ecr-push.sh`
 - [x] Repositório ECR `technova-api` criado no Learner Lab (`us-east-1`)
 - [x] Pull da imagem a partir do ECR funcionando (rollback por tag `1.0.0`)
-- [x] Workflow de AI Review disparando em PRs — `.github/workflows/ai-review-aula09.yml` (`aula-09/.github/scripts/ai-review.js`)
+- [x] Workflow de AI Review disparando em PRs — `.github/workflows/ai-review.yml` (`aula-09/.github/scripts/ai-review.js`)
 - [x] Quality gate (CRITICAL bloqueia o PR): o check falhou no PR #2
 - [x] `ia-cicd-analise.md` preenchido — `aula-09/ia-cicd-analise.md`
 - [x] Screenshots (console ECR com as tags, AI review, pipeline verde, gate bloqueando) — `aula-09/screenshots/`
 
 Bônus: lifecycle policy no ECR, comentário do AI review atualizado (não duplicado), 13 padrões de detecção.
 
-Não feito: `ci.yml` com push automático ao ECR, badge, workflow de segurança separado, Dockerfile com score A. O scan on push está ligado no repositório, mas o ECR não retornou resultado de scan para a imagem, então não há evidência.
+Criado, mas não executado: `.github/workflows/ci.yml` (push ao ECR em tag `v*.*.*` ou manual; depende dos secrets do Lab, que expiram). Não feito: badge, workflow de segurança separado, Dockerfile com score A. O scan on push está ligado no repositório, mas o ECR não retornou resultado de scan para a imagem, então não há evidência.
 
 ## Evidência do Pipeline Rodando
 
