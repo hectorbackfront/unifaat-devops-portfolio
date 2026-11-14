@@ -8,11 +8,11 @@ terraform {
     }
   }
 
-  # State remoto (reaproveita o bucket + tabela de lock criados na Aula 05).
+  # State remoto (bucket + tabela de lock criados uma vez na mao, pois o Terraform nao cria o proprio backend).
   # Em GitOps o state PRECISA ser remoto: o runner do GitHub Actions e efemero,
   # entao o state local seria perdido entre o plan (PR) e o apply (merge).
   backend "s3" {
-    bucket         = "technova-terraform-state-16d6db44"
+    bucket         = "technova-tfstate-6125136"
     key            = "aula-10/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true

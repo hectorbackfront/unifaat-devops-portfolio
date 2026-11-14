@@ -7,7 +7,7 @@ Infra via PR (plan no PR, apply no merge) e deploy continuo da API TechNova numa
 ```
 aula-10/
 ├── technova-api/          # app Node + Dockerfile multi-stage (contexto do build)
-├── terraform/             # SG + key pair + EC2 com Docker (backend S3 da aula 05)
+├── terraform/             # SG + key pair + EC2 com Docker (backend S3 proprio)
 ├── docs/runbook-rollback.md
 ├── gitops-cd-analise.md
 └── screenshots/
@@ -28,7 +28,7 @@ aula-10/
 | `EC2_SSH_KEY` | conteudo da chave privada `chave` (par da publica acima) |
 | `EC2_HOST` | IP publico da EC2 (output `public_ip` do apply) |
 
-Pre-requisito: bucket S3 e tabela DynamoDB de state da aula 05 existentes (ver `terraform/provider.tf`). Se o Lab foi resetado, recrie com `aula-05/backend` e ajuste o nome do bucket.
+Pre-requisito (criado uma vez na mao, o Terraform nao cria o proprio backend): bucket `technova-tfstate-6125136` e tabela DynamoDB `technova-terraform-locks`. Se o Lab for resetado eles somem: recrie com `aws s3api create-bucket` e `aws dynamodb create-table` (ver `terraform/provider.tf`).
 
 ## Como reproduzir
 
