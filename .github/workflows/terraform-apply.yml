@@ -1,0 +1,51 @@
+name: Terraform Apply (Aula 10)
+
+# GitOps: o apply so roda depois do merge na main. Ninguem aplica na mao.
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'aula-10/terraform/**.tf'
+      - 'aula-10/terraform/**.tfvars'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: terraform-aula10
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  TF_VAR_ssh_public_key: ${{ secrets.TF_VAR_SSH_PUBLIC_KEY }}
+
+defaults:
+  run:
+    working-directory: aula-10/terraform
+
+jobs:
+  apply:
+    name: Terraform apply
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: terraform init
+        run: terraform init -input=false
+
+      - name: terraform apply
+        run: terraform apply -auto-approve -input=false
+
+      - name: Outputs (IP para o secret EC2_HOST)
+        run: terraform output

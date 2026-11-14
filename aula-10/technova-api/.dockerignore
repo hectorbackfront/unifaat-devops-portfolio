@@ -1,0 +1,13 @@
+node_modules
+coverage
+.git
+.github
+.env
+*.log
+__tests__
+.eslintrc.json
+screenshots
+*.md
+Dockerfile
+.dockerignore
+ecr-push.sh
