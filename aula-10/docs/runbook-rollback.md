@@ -52,4 +52,6 @@ docker ps --filter name=technova-api        # imagem com a tag esperada
 | `manifest unknown` | tag nao existe (lifecycle policy removeu) | escolha outra tag do passo 1 |
 | health check sem resposta | Security Group sem porta 3000 | confira `aws_security_group.api` |
 
+> Testado em 2026-11-14: `sha-01aee39` -> `sha-8a0d4fd` -> `sha-01aee39`, `/health` ok nas duas.
+
 > Obs: o rollback manual cria divergencia entre o que roda e o que esta na `main`. Depois, faca o `git revert` (opcao A) para o repositorio voltar a refletir a producao.

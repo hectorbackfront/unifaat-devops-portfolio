@@ -38,6 +38,10 @@ Pre-requisito (criado uma vez na mao, o Terraform nao cria o proprio backend): b
 4. Qualquer push em `aula-10/technova-api/**` na `main` (ou *Run workflow* manual) dispara o `cd.yml`.
 5. Valide: `curl http://<EC2_HOST>:3000/health`.
 
+## Evidencias
+
+Prints em `screenshots/`: `plan-pr-comment.png`, `apply-success.png`, `cd-pipeline-green.png`, `health-check-pass.png`.
+
 ## Bonus implementados
 
 `terraform fmt -check`; comentario do plan atualizado (nao duplicado); aviso quando o plan contem destroy; imagem rastreavel por SHA e `GIT_SHA` no container.

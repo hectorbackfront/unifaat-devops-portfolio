@@ -53,4 +53,20 @@ Ver [docs/runbook-rollback.md](docs/runbook-rollback.md): como as imagens tem ta
 
 ## Evidencias
 
-Ainda nao anexadas: os screenshots (`plan-pr-comment.png`, `apply-success.png`, `cd-pipeline-green.png`, `health-check-pass.png`) dependem de rodar os workflows com as credenciais do Lab, e ficam em `screenshots/`.
+Todas obtidas em 2026-11-14 no Learner Lab (`us-east-1`):
+
+| Evidencia | Arquivo |
+|---|---|
+| Plan como comentario no PR #3 (3 a criar, 0 a destruir) | `screenshots/plan-pr-comment.png` (+ `-inicio`, `-meio`) |
+| Apply apos o merge (`Apply complete! Resources: 3 added`) | `screenshots/apply-success.png` (+ `apply-log-*.png`) |
+| Pipeline CD verde: lint + test -> build/push ECR -> deploy | `screenshots/cd-pipeline-green.png` |
+| Health check no log (falhou na tentativa 1, OK na 2) | `screenshots/health-check-pass.png` |
+
+O rollback foi testado manualmente na EC2: `sha-01aee39` -> `sha-8a0d4fd` -> `sha-01aee39`, com login no ECR antes do pull e `/health` respondendo `ok` nas duas versoes.
+
+## Problemas encontrados durante a execucao
+
+- O bucket de state da aula 05 tinha sido apagado pelo reset do Lab (`NoSuchBucket` no `terraform init`). Foi criado um bucket novo (`technova-tfstate-6125136`) e a tabela de lock, uma vez, na mao.
+- O comentario do plan nao saia quando o `init` falhava; o step de comentar passou a rodar com `if: always()`.
+- `script_stop` deixou de ser input valido do `appleboy/ssh-action`; trocado por `set -e` no script.
+- O primeiro deploy (logo apos o merge) falhou com `missing server host`, pois o secret `EC2_HOST` so pode ser criado depois que o apply cria a EC2.
